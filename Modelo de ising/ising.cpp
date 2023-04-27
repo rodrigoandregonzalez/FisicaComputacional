@@ -9,7 +9,7 @@ using namespace std;
 int main()
 {
     int N=100;
-    float T=2.2;
+    double T=2;
 
 
     int matriz[N][N];
@@ -24,19 +24,21 @@ int main()
         for (int j=0 ; j<N; j++)
         {
             int y=1+rand()%(2);
+            
             matriz[i][j]=pow(-1,y);
-            cout << matriz[i][j];
+            
+            //cout << matriz[i][j];
         }
     }
 
 
     for (int l=0;l<N;l++)
     {
-        for (int k=0;k<pow(N,2);k++)
+        for (int k=0;k<N*N;k++)
         {
             int n=rand()%N;
             int m=rand()%N;
-            
+                
             int aux1=n+1;
             int aux2=n-1;
             int aux3=m+1;
@@ -63,21 +65,21 @@ int main()
             }
 
 
-            float de= 2*matriz[n][m]*(matriz[aux1][m]+matriz[aux2][m]+matriz[n][aux3]+matriz[n][aux4]);
-            float p;
-            
-            if(1<exp(de/T))
+            double de= 2*matriz[n][m]*(matriz[aux1][m]+matriz[aux2][m]+matriz[n][aux3]+matriz[n][aux4]);
+            double p;
+
+            if(1<exp(-de/T))
             {
                 p=1;
             }
 
-            if(1>exp(de/T))
+            if(1>exp(-de/T))
             {
-                p=exp(de/T);
+                p=exp(-de/T);
             }
 
             double x=(double) rand() /RAND_MAX;
-            
+
             if(x<p)
             {
                 matriz[n][m]=-matriz[n][m];
