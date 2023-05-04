@@ -8,8 +8,8 @@ using namespace std;
 
 int main()
 {
-    int N=10;  //filas y columnas de la matriz de espin
-    double T=0; //Temperatura 
+    int N=100;  //filas y columnas de la matriz de espin
+    double T=0.01; //Temperatura 
 
     int matriz[N][N]; //definimos matriz
 
@@ -32,7 +32,7 @@ int main()
     } 
 
 
-    for (int a=0;a<500;a++)
+    for (int a=0;a<N*N;a++)
     {
         for(int b=0;b<N*N;b++)
         {
@@ -78,7 +78,7 @@ int main()
                 p=exp(-DE/T);
             }
         
-            double x=x=gsl_rng_uniform(tau);
+            double x=gsl_rng_uniform(tau);
             printf("%f",x);
             if(x<p)
             {

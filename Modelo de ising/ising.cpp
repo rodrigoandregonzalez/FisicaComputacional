@@ -8,8 +8,8 @@ using namespace std;
 
 int main()
 {
-    int N=100;
-    double T=2;
+    int N=5;
+    double T=0.;
 
 
     int matriz[N][N];
@@ -32,9 +32,8 @@ int main()
     }
 
 
-    for (int l=0;l<N;l++)
-    {
-        for (int k=0;k<N*N;k++)
+    
+        for (int k=0;k<N*N*N*N*N;k++)
         {
             int n=rand()%N;
             int m=rand()%N;
@@ -85,8 +84,6 @@ int main()
                 matriz[n][m]=-matriz[n][m];
             }
             
-        }
-
         for (int i=0;i<N;i++)
         {
             for(int j=0;j<N;j++)
@@ -109,8 +106,11 @@ int main()
 
         //fichero << endl;
         fprintf(fichero,"\n");
-       
-    }
+           
+        }
+
+        
+    
 
     //fichero.close();  
     fclose(fichero);
