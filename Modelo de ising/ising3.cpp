@@ -11,7 +11,7 @@ int main()
 
     double T=0.1; //TEMPERATURA
     
-    int N=10; //TAMAÑO DE LA MATRIZ
+    int N=100; //TAMAÑO DE LA MATRIZ
     int matriz[N][N];
     
     int d=0;
