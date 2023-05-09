@@ -1,52 +1,60 @@
 import numpy as np
 
 N=40
-nciclos=N/4 #n maximo
+nciclos=int(N/4) #n maximo
 l=0.3 #lambda
-n=1
+n=0
 
-while n<nciclos:
-    
-    k0=2*np.pi*n/N
-    s=1/(4*k0**2)
+k0=np.zeros(nciclos)
+s=np.zeros(nciclos)
 
+Vj=np.zeros(N,dtype=complex)
+fij0=np.zeros(N,dtype=complex)
 
-    Vj=np.zeros(N,dtype=complex)
-    fij0=np.zeros(N,dtype=complex)
+Ajmenos=1
+Ajmas=1
+Aj0=np.zeros(N,dtype=complex)
+
+a=np.zeros(N,dtype=complex)
+a[N-1]=0
+
+gamma=np.zeros(N,dtype=complex)
+
+#GENERAMOS LOS PARAMETROS QUE VAN A SER CONSTANTES
+for n in range(nciclos):
+    k0[n]=2*np.pi*(n+1)/N
+
+    s[n]=1/(4*k0[n]**2)
 
     for j in range(N):
 
         if 2*N/5<=j<=3*N/5:
-            Vj[j]=l*k0**2
+            Vj[j]=l*k0[n]**2
         else:
             Vj[j]=0
 
         if j==0 or j==N:
             fij0[j]=0
         else:
-            fij0[j]=np.e**(complex(0,k0*j))*np.e**((-8*(4*j-N)**2)/N**2)
-
-        Ajmenos=1
-        Ajmas=1
-        Aj0=np.zeros(N,dtype=complex)
-        Aj0[j]=complex(-2,2j/s)-Vj[j]
+            fij0[j]=np.e**(complex(0,k0[n]*j))*np.e**((-8*(4*j-N)**2)/N**2)
 
 
-        a=np.zeros(N-1,dtype=complex)
-        a[N-2]=0
+        Aj0[j]=complex(-2,2/s[n])-Vj[j]
+
         h=N-2-j
-        gamma=np.zeros(N,dtype=complex)
-        if h>1:
-            gamma[h]=Aj0+Ajmas*a[h]
-            a[h-1]=-Ajmenos/gamma[h]
-
         
+        gamma[h]=Aj0[h]+Ajmas*a[h]
 
+        a[h-1]=-Ajmenos*gamma[h]
 
     
+print(a)
+
+#BUCLE PARA LOS PASOS 2,3,4
 
 
-    n=n+1
+
+
 
 
 
