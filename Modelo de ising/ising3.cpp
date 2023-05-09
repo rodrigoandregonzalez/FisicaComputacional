@@ -29,7 +29,7 @@ int main()
     }
 
 
-    for (int a=0;a<pow(N,4);a++) // BUCLE PARA CAMBIAR LOS SPINES
+    for (int a=0;a<5*pow(N,3);a++) // BUCLE PARA CAMBIAR LOS SPINES
     {
         int n=rand()%N;
         int m=rand()%N;
