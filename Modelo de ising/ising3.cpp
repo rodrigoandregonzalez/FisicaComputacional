@@ -11,7 +11,7 @@ int main()
 
     double T=1; //TEMPERATURA
     
-    int N=100; //TAMAÑO DE LA MATRIZ
+    int N=25; //TAMAÑO DE LA MATRIZ
     int matriz[N][N];
     
     int d=0;
@@ -29,7 +29,7 @@ int main()
     }
 
 
-    for (int a=0;a<pow(N,3);a++) // BUCLE PARA CAMBIAR LOS SPINES
+    for (int a=0;a<pow(N,4);a++) // BUCLE PARA CAMBIAR LOS SPINES
     {
         int n=rand()%N;
         int m=rand()%N;
