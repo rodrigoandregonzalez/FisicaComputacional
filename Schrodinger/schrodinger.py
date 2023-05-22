@@ -1,8 +1,8 @@
 import numpy as np
 import cmath as cmath
 import matplotlib.pyplot as plt
-N=1000
-nciclos=100
+N=100
+nciclos=10
 l=0.3 #lambda
 n=0
 j=0
@@ -48,7 +48,7 @@ while j<N:
 fi[0]=0
 fi[N-1]=0
 
-norma=np.sum(abs(fi))
+
 #print(norma)
 j=0
 n=0
@@ -128,19 +128,21 @@ with open("schrodinger_data.dat", "w") as f:
             fireal=fi.real
             fimag=fi.imag
 
-            modulo=abs(fi)
-            norma=np.sqrt(modulo[8])
-
-
-
+            modulo[i]=(fi.real[i]**2+fi.imag[i]**2)
 
 
             f.write(f"{i},{modulo[i]},{Vj[i].real}\n")
 
         f.write(f"\n")
 
+        norma=0
 
-        linea1=ax.plot(n,norma,'o',mfc='w',mec='k',ms=1)
+        for i in range(len(fi)):
+            norma=norma+(fi.real[i]**2+fi.imag[i]**2)
+
+        linea1=ax.plot(n,np.sqrt(norma),'o',mfc='w',mec='k',ms=1)
+
+        
         
         
     
