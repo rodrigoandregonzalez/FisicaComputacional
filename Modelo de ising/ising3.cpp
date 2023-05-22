@@ -9,7 +9,7 @@ int main()
 {
     srand(time(NULL));
 
-    double T=1; //TEMPERATURA
+    double T=3; //TEMPERATURA
     
     int N=100; //TAMAÑO DE LA MATRIZ
     int matriz[N][N];
