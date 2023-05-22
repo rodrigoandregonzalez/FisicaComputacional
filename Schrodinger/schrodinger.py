@@ -129,7 +129,7 @@ with open("schrodinger_data.dat", "w") as f:
             fimag=fi.imag
 
             modulo=abs(fi)
-            norma=np.sum(np.sqrt(modulo))
+            norma=np.sqrt(modulo[8])
 
 
 
