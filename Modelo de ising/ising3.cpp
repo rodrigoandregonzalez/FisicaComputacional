@@ -68,7 +68,7 @@ int main()
             p=exp(-de/T);
         }
 
-        double x = (double) rand()/RAND_MAX;
+        double x = ((double) rand())/((double) RAND_MAX);
         if(x<p)
         {
             matriz[n][m]=-matriz[n][m];
