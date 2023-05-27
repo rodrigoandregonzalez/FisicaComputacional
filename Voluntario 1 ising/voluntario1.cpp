@@ -209,7 +209,7 @@ int main()
     double promedioft=(1/(N*N))*promediosnmt;
     double promediofn=(1/(N*N))*promediosnmn;
 
-    fprintf(magnitudes,"Magnetización promedio: %d \n Energía media: %d \n Calor específico: %d \n Función de correlación (T): %d \n Función de correlación (N): %d \n",promediomg,promedioen,promediocn,promedioft,promediofn);
+    fprintf(magnitudes,"Magnetización promedio: %f \n Energía media: %f \n Calor específico: %f \n Función de correlación (T): %f \n Función de correlación (N): %f \n",promediomg,promedioen,promediocn,promedioft,promediofn);
 
     fclose(fichero);
     fclose(magnitudes);
