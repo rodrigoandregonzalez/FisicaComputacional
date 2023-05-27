@@ -87,7 +87,7 @@ int main()
     double E;
     double E2;
     double snmt;
-    double snmn
+    double snmn;
     extern gsl_rng *tau; //Puntero al estado del número aleatorio
     int semilla=177013; //Semilla del generador de números aleatorios
 
