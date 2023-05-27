@@ -9,7 +9,7 @@ int main()
 {
     srand(time(NULL));
 
-    double T=3; //TEMPERATURA
+    double T=1; //TEMPERATURA
     
     int N=100; //TAMAÑO DE LA MATRIZ
     int matriz[N][N];
@@ -45,7 +45,7 @@ int main()
         }
         if (aux2==-1)
         {
-            aux2=N;
+            aux2=N-1;
         }
         if (aux3==N)
         {
@@ -53,7 +53,7 @@ int main()
         }
         if (aux4==-1)
         {
-            aux4=N;
+            aux4=N-1;
         }
 
         double de=2*matriz[n][m]*(matriz[aux1][m]+matriz[aux2][m]+matriz[n][aux3]+matriz[n][aux4]);
@@ -97,8 +97,8 @@ int main()
                 }
                 
             }
-        fprintf(fichero,"\n");
-        d=0;
+            fprintf(fichero,"\n");
+            d=0;
         }
         else
         {
