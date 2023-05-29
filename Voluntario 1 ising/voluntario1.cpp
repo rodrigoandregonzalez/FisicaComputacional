@@ -103,6 +103,9 @@ int main()
 
     int d=0;
 
+    tau=gsl_rng_alloc(gsl_rng_taus); //Inicializamos el puntero
+    gsl_rng_set(tau,semilla); //Inicializamos la semilla
+
     FILE* fichero= fopen("ising_data.dat","a");
     FILE* magnitudes= fopen("magnitudes.dat","a");
     //generamos matriz N*N toda de 1s
