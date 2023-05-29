@@ -69,7 +69,7 @@ double energia(int mtrz[N][N])
 
 double corr(int mtrz[N][N],int g)
 {
-    double snm;
+    double snm=0.0;
     for (int i=0;i<N;i++)
     {
         for(int j=0;j<N;j++)
