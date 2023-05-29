@@ -3,15 +3,15 @@
 #include <cstdlib>
 #include "gsl_rng.h"
 #include <iostream>
+#define N 16 
 
 gsl_rng *tau;
 
-int N=16;
 double T=1.5;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~DEFINIMOS FUNCIONES~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-double magnetizacion(int mtrz[16][16])
+double magnetizacion(int mtrz[N][N])
 {
     double mn;
     double suma;
@@ -29,7 +29,7 @@ double magnetizacion(int mtrz[16][16])
 }
 
 
-double energia(int mtrz[16][16])
+double energia(int mtrz[N][N])
 {
     double E;
 
@@ -65,16 +65,25 @@ double energia(int mtrz[16][16])
     return E;
 }
 
-double corr(int mtrz[16][16],double g)
+double corr(int mtrz[N][N],double g)
 {
     double snm;
     for (int i=0;i<N;i++)
     {
         for(int j=0;j<N;j++)
         {
-            snm=snm+mtrz[i][j]*mtrz[i+g][j];
+            if(i<N-a)
+            {
+                snm=snm+mtrz[i][j]*mtrz[i+g][j];
+            }
+            else
+            {
+                snm=snm+mtrz[i][j]*mtrz[i+a-N][j];
+            }
         }
+
     }
+    return snm/(N*N);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
