@@ -65,20 +65,20 @@ double energia(int mtrz[N][N])
     return E;
 }
 
-double corr(int mtrz[N][N],double g)
+double corr(int mtrz[N][N],int g)
 {
     double snm;
     for (int i=0;i<N;i++)
     {
         for(int j=0;j<N;j++)
         {
-            if(i<N-a)
+            if(i<N-g)
             {
                 snm=snm+mtrz[i][j]*mtrz[i+g][j];
             }
             else
             {
-                snm=snm+mtrz[i][j]*mtrz[i+a-N][j];
+                snm=snm+mtrz[i][j]*mtrz[i+g-N][j];
             }
         }
 
@@ -95,8 +95,9 @@ int main()
     double mg;   //variable donde se va a sumar la magnetizacion para cada 100 pmc
     double E;
     double E2;
-    double snmt;
-    double snmn;
+    double snm;
+    //double snmt;
+    //double snmn;
     extern gsl_rng *tau; //Puntero al estado del número aleatorio
     int semilla=177013; //Semilla del generador de números aleatorios
 
@@ -170,8 +171,10 @@ int main()
             E=energia(matriz)+E;
             E2=energia(matriz)*energia(matriz)+E2;
             
-            snmt=corr(matriz,T)+snmt;
-            snmn=corr(matriz,N)+snmn;
+            int g=1;
+            snm=corr(matriz,g)+snm;
+            //snmt=corr(matriz,T)+snmt;
+            //snmn=corr(matriz,N)+snmn;
 
             for(int i=0;i<N;i++)
             {
@@ -212,13 +215,15 @@ int main()
     double promedioen=promedioE/(2*N);
     double promediocn=(1/(N*N*T))*(promedioE2-promedioE*promedioE);
     
-    double promediosnmt=snmt/10000;
-    double promediosnmn=snmn/10000;
+    double promediosnm=snm/10000;
+    //double promediosnmt=snmt/10000;
+    //double promediosnmn=snmn/10000;
 
-    double promedioft=(1/(N*N))*promediosnmt;
-    double promediofn=(1/(N*N))*promediosnmn;
+    double promediof=(1/(N*N))*promediosnm;
+    //double promedioft=(1/(N*N))*promediosnmt;
+    //double promediofn=(1/(N*N))*promediosnmn;
 
-    fprintf(magnitudes,"Magnetización promedio: %f \n Energía media: %f \n Calor específico: %f \n Función de correlación (T): %f \n Función de correlación (N): %f \n",promediomg,promedioen,promediocn,promedioft,promediofn);
+    fprintf(magnitudes,"Magnetización promedio: %f \n Energía media: %f \n Calor específico: %f \n Función de correlación: %f \n",promediomg,promedioen,promediocn,promediof);
 
     fclose(fichero);
     fclose(magnitudes);
