@@ -11,6 +11,8 @@ double T=1.5;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~DEFINIMOS FUNCIONES~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+
 double magnetizacion(int mtrz[N][N])
 {
     double mn;
@@ -89,8 +91,12 @@ double corr(int mtrz[N][N],int g)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 int main()
 {  
+    FILE* fichero= fopen("ising_data.dat","a");
+    FILE* magnitudes= fopen("magnitudes.dat","a");
+for (int k=0;k<10;k++){
     int matriz[N][N];
     double mg;   //variable donde se va a sumar la magnetizacion para cada 100 pmc
     double E;
@@ -106,8 +112,7 @@ int main()
     tau=gsl_rng_alloc(gsl_rng_taus); //Inicializamos el puntero
     gsl_rng_set(tau,semilla); //Inicializamos la semilla
 
-    FILE* fichero= fopen("ising_data.dat","a");
-    FILE* magnitudes= fopen("magnitudes.dat","a");
+
     //generamos matriz N*N toda de 1s
     for (int i=0;i<N;i++)       
     {
@@ -225,9 +230,11 @@ int main()
     double promediof=(1/(N*N))*promediosnm;
     //double promedioft=(1/(N*N))*promediosnmt;
     //double promediofn=(1/(N*N))*promediosnmn;
-
+    fprintf(magnitudes,"T: %f \n",T);
     fprintf(magnitudes,"Magnetización promedio: %f \n Energía media: %f \n Calor específico: %f \n Función de correlación: %f \n",promediomg,promedioen,promediocn,promediof);
 
+T=T+0.2;
+}
     fclose(fichero);
     fclose(magnitudes);
     return 0;
