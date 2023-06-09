@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include "gsl_rng.h"
 #include <iostream>
-#define N 16 
+#define N 128
 
 gsl_rng *tau;
 
@@ -61,7 +61,7 @@ double energia(int mtrz[N][N])
                 aux4=N-1;
             }
 
-            E=E+(-1/2)*mtrz[i][j]*(mtrz[i][aux3]+mtrz[i][aux4]+mtrz[aux1][j]+mtrz[aux2][j]);   
+            E=E+(-0.5)*mtrz[i][j]*(mtrz[i][aux3]+mtrz[i][aux4]+mtrz[aux1][j]+mtrz[aux2][j]);   
         }
     } 
     return E;
@@ -76,11 +76,11 @@ double corr(int mtrz[N][N],int g)
         {
             if(i<N-g)
             {
-                snm=snm+mtrz[i][j]*mtrz[i+g][j];
+                snm=snm+(mtrz[i][j]*mtrz[i+g][j]);
             }
             else
             {
-                snm=snm+mtrz[i][j]*mtrz[i+g-N][j];
+                snm=snm+(mtrz[i][j]*mtrz[i+g-N][j]);
             }
         }
 
@@ -94,16 +94,22 @@ double corr(int mtrz[N][N],int g)
 
 int main()
 {  
-    FILE* fichero= fopen("ising_data.dat","a");
+    //FILE* fichero= fopen("ising_data.dat","a");
     FILE* magnitudes= fopen("magnitudes.dat","a");
+    
 for (int k=0;k<10;k++){
+    int w=0;
     int matriz[N][N];
-    double mg;   //variable donde se va a sumar la magnetizacion para cada 100 pmc
-    double E;
-    double E2;
-    double snm;
-    //double snmt;
-    //double snmn;
+    double mg=0;   //variable donde se va a sumar la magnetizacion para cada 100 pmc
+    long double E=0;
+    long double E2=0;
+    long double sumE=0;
+    double snm=0;
+    double magne[10000];
+    double ener[10000];
+    double ener2[10000];
+    double corre[10000];
+    
     extern gsl_rng *tau; //Puntero al estado del número aleatorio
     int semilla=177013; //Semilla del generador de números aleatorios
 
@@ -124,7 +130,8 @@ for (int k=0;k<10;k++){
 
 
     //evolucion de la matriz
-    for (int a=0; a<1000000*N*N;a++)
+    double a;
+    for (a=0; a< (double) 1000000*(N*N);a++)
     {
         int n=gsl_rng_uniform_int(tau,N);
         int m=gsl_rng_uniform_int(tau,N);
@@ -167,45 +174,36 @@ for (int k=0;k<10;k++){
 
         if(x<p)
         {
-            matriz[n][m]=-matriz[n][m];
+            matriz[n][m]=-1*matriz[n][m];
         }
 
 
         //calculo de magnitudes:
         if(d==100*pow(N,2))
-        {
+        {   
+            
             mg=magnetizacion(matriz)+mg;
+            
+            
+            magne[w]=magnetizacion(matriz);
 
-            E=energia(matriz)+E;
-            E2=energia(matriz)*energia(matriz)+E2;
+            E=energia(matriz);
+            
+            ener[w]=E;
+            sumE=sumE+E;
+
+            E2=E*E+E2;
+            
+            ener2[w]=E*E;
             
             int g=1;
             snm=corr(matriz,g)+snm;
-            //snmt=corr(matriz,T)+snmt;
-            //snmn=corr(matriz,N)+snmn;
-
-            for(int i=0;i<N;i++)
-            {
-                for(int j=0;j<N;j++)
-                {
-                    if (j<N-1)
-                    {
-                        //fichero << matriz[i][j]<<", ";
-                        fprintf(fichero,"%d," , matriz[i][j]);
-                    }
-
-                    else
-                    {
-                        //fichero<<matriz[i][j+1]<<endl;
-                        fprintf(fichero,"%d \n" , matriz[i][j]);
-                    }    
             
-                }
-                
-            }
-            fprintf(fichero,"\n");
+            corre[w]=corr(matriz,g);
 
+            w=w+1;
             d=0;
+            
         }
         else
         {
@@ -217,25 +215,50 @@ for (int k=0;k<10;k++){
 
     double promediomg=mg/10000;
 
-    double promedioE=E/10000;
+    double promedioE=sumE/10000;
+    
     double promedioE2=E2/10000;
 
     double promedioen=promedioE/(2*N);
-    double promediocn=(1/(N*N*T))*(promedioE2-promedioE*promedioE);
+    
+    double promediocn=(promedioE2-(promedioE*promedioE))/(N*N*T);
     
     double promediosnm=snm/10000;
-    //double promediosnmt=snmt/10000;
-    //double promediosnmn=snmn/10000;
 
-    double promediof=(1/(N*N))*promediosnm;
-    //double promedioft=(1/(N*N))*promediosnmt;
-    //double promediofn=(1/(N*N))*promediosnmn;
+    double promediof=promediosnm;
+    
+    double incermg;
+    double incerE;
+    double incerE2;
+    double inceren;
+    double incercn;
+    double incerf;
+    for (int i=0;i<10000;i++)
+    {
+        incermg=(magne[i]-promediomg)*(magne[i]-promediomg)+incermg;
+        incerE=(ener[i]-promedioE)*(ener[i]-promedioE)+incerE;
+        incerE2=(ener2[i]-promedioE2)*(ener2[i]-promedioE2)+incerE2;
+        incerf=(corre[i]-promediosnm)*(corre[i]-promediosnm)+incerf;
+        incercn=incercn+((ener2[i]-ener[i]*ener[i])/(N*N*T)-(promedioE2-(promedioE*promedioE))/(N*N*T))*((ener2[i]-ener[i]*ener[i])/(N*N*T)-(promedioE2-(promedioE*promedioE))/(N*N*T));
+    }
+
+    incermg=incermg/10000;
+    incerE=incerE/10000;
+    incerE2=incerE2/10000;
+    incerf=incerf/10000;
+
+    inceren=incerE/(2*N);
+    incercn=incercn/10000;
+    
+
+
+
     fprintf(magnitudes,"T: %f \n",T);
-    fprintf(magnitudes,"Magnetización promedio: %f \n Energía media: %f \n Calor específico: %f \n Función de correlación: %f \n",promediomg,promedioen,promediocn,promediof);
+    fprintf(magnitudes,"Magnetización promedio: %f// %f \n Energia: %f// %f \n Energia^2: %f// %f \n  Energía media: %f// %f \n Calor específico: %f// %f \n Función de correlación: %f// %f \n",promediomg,incermg,promedioE,incerE,promedioE2,incerE2,promedioen,inceren,promediocn,incercn,promediof,incerf);
 
 T=T+0.2;
 }
-    fclose(fichero);
+    //fclose(fichero);
     fclose(magnitudes);
     return 0;
 }
